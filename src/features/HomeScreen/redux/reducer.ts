@@ -1,9 +1,11 @@
+import {createSlice} from '@reduxjs/toolkit';
 import {
-  POSTS_FETCH_FAILD,
-  POSTS_FETCH_REQUESTED,
-  POSTS_FETCH_SUCEED,
+  fetchPostsFailed,
+  fetchPostsRequested,
+  fetchPostsSucceed,
 } from '../../../store/actions';
 import {IPost} from '../../../store/dataTypes';
+import {EReducerBasename} from '../../../constants/reducerBaseName';
 
 export interface Action<P> {
   readonly type: string;
@@ -20,29 +22,23 @@ const initialState: {
   error: '',
 };
 
-export default function posts(
-  state = initialState,
-  action: Action<IPost[] & string>,
-): typeof initialState {
-  switch (action.type) {
-    case POSTS_FETCH_REQUESTED:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case POSTS_FETCH_SUCEED:
-      return {
-        ...state,
-        isLoading: false,
-        posts: [...state.posts, ...action?.payload],
-      };
-    case POSTS_FETCH_FAILD:
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-}
+export const postsSlice = createSlice({
+  name: EReducerBasename.POSTS,
+  initialState,
+  reducers: {},
+  extraReducers(builder) {
+    builder.addCase(fetchPostsSucceed, (state, {payload}) => {
+      state.posts = [...state.posts, ...payload];
+      state.isLoading = false;
+    });
+    builder.addCase(fetchPostsRequested, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchPostsFailed, (state, {payload}) => {
+      state.isLoading = false;
+      state.error = payload;
+    });
+  },
+});
+
+export const {reducer: postsReducer} = postsSlice;

@@ -1,7 +1,19 @@
+import {createAction} from '@reduxjs/toolkit';
 import {EReducerBasename} from '../constants/reducerBaseName';
+import {IPost} from './dataTypes';
 
-export const POSTS_FETCH_REQUESTED = 'POSTS_FETCH_REQUESTED';
-export const POSTS_FETCH_SUCEED = 'POSTS_FETCH_SUCEED';
-export const POSTS_FETCH_FAILD = 'POSTS_FETFAILDTED';
+const FETCH_REQUESTED = 'FETCH_REQUESTED';
+const FETCH_SUCCEED = 'FETCH_SUCEED';
+const FETCH_FAILD = 'FETFAILDTED';
 
 const namespace = EReducerBasename.POSTS.toUpperCase();
+
+export const fetchPostsRequested = createAction(
+  `@${namespace}${FETCH_REQUESTED}`,
+);
+export const fetchPostsSucceed = createAction<IPost[]>(
+  `@${namespace}${FETCH_SUCCEED}`,
+);
+export const fetchPostsFailed = createAction<string>(
+  `@${namespace}${FETCH_FAILD}`,
+);

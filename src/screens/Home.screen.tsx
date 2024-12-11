@@ -9,17 +9,18 @@ import {
   View,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
-import {POSTS_FETCH_REQUESTED} from '../store/actions';
+
 import {useAppSelector} from '../store/config';
 import {IPost} from '../store/dataTypes';
 import {postsSelector} from '../features/HomeScreen/redux/selectors';
+import { fetchPostsRequested } from '../store/actions';
 
 export const HomeScreen = () => {
   const dispatch = useDispatch();
   const posts = useAppSelector(postsSelector);
 
   useEffect(() => {
-    dispatch({type: POSTS_FETCH_REQUESTED});
+    dispatch(fetchPostsRequested());
   }, [dispatch]);
   const renderItem: ListRenderItem<IPost> = useCallback(({item}) => {
     return (
@@ -30,11 +31,11 @@ export const HomeScreen = () => {
   }, []);
   return (
     <View style={styles.mainWrapper}>
-      {posts.isLoading ? (
+      {posts?.isLoading ? (
         <ActivityIndicator color={'green'} size={'large'} />
       ) : (
         <FlatList
-          data={posts.posts}
+          data={posts?.posts}
           renderItem={renderItem}
           keyExtractor={item => item.id.toString()}
         />

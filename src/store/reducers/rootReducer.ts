@@ -1,6 +1,8 @@
 import {combineReducers} from '@reduxjs/toolkit';
-import posts from '../../features/HomeScreen/redux/reducer';
+import {postsReducer} from '../../features/HomeScreen/redux/reducer';
+import {EReducerBasename} from '../../constants/reducerBaseName';
+//import posts from '../../features/HomeScreen/redux/reducer';
 
 export const rootReducer = combineReducers({
-  posts: posts,
+  [EReducerBasename.POSTS]: postsReducer,
 });
